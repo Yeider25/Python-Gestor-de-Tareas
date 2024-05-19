@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='CSS/Estilo.css')}}">
+    <title>Busqueda</title>
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="/Usuario">Inicio</a>
+        <a href="/Registro_tareas">Registrar tareas</a>
+        <a href="/Salir">Cerrar sesión</a>
+        <a href="/Cambiar_contrasena_usuario">
+            <img src="{{url_for('static', filename='Imagenes/icons8-change-password-58.png')}}" alt="Cambiar Contraseña">
+        </a>
+    </header>
+
+    <h1>Resultados de la busqueda "{{busqueda}}"</h1>
+
+    <div class="row">
+        {%for tarea in tareas%}
+        <div class="col-md-3mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{tarea['Nombre']}}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{tarea['Fecha_Inicio']}} - {{tarea['Fecha_Fin']}}</p>
+                    <p class="card-text">{{tarea['Estado']}}</p>
+                    <p class="card-text">{{tarea['ID_Usuario']}}</p>
+                    <a href="/" class="btn btn-primary">Ir a Tarea</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
