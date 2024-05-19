@@ -613,10 +613,16 @@ def cambiar_contrasena_usuario():
         return redirect(url_for('Interfaz_usuario'))
 
     return render_template('Cambiar_contraseña_usuario.html')
+    
+@app.route('buscar_tarea')
+def buscar_tarea():
+    nombre_tarea = request.args.get('nombre_tarea')
+    db = get_db_connection()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM tareas WHERE Nombre = %s", (nombre_tarea,))
+    tarea = cursor.fetchone()
+    return render_template('Interfaz_administrador.html', tarea=tarea)
 
-        
-        # Renderizar resultados en una plantilla
-        return render_template('resultados.html', tareas=tareas)@app.route('/Salir')  
 def Salir():   
     session.pop("nombre_usuario", None)
     print("Sesión cerrada y nombre de usuario eliminado.")
