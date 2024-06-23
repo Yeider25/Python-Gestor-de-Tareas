@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='CSS/Estilo.css')}}">
+    <title>Estadisticas</title>
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="/Administrador">Inicio</a>
+        <a href="/Registro-usuarios-interfaz-administrador">Registrar usuarios</a>
+        <a href="/Registro-tareas-interfaz-administador">Registrar tareas</a>
+        <a href="/Salir">Cerrar sesión</a>
+        <a href="/Cambiar_contrasena_administrador" id="Contenedor_cambiar_contrasena">
+            <img src="{{url_for('static', filename='Imagenes/icons8-change-password-58.png')}}" alt="Cambiar Contraseña">
+        </a>
+    </header>
+    <div class="content">
+        <h1>Estadisticas</h1>
+        <div class="estadisticas">
+            <div class="estadistica">
+                <h2>Usuarios registrados</h2>
+                <p>{{usuarios}}</p>
+            </div>
+            <div class="estadistica">
+                <h2>Tareas registradas</h2>
+                <p>{{tareas}}</p>
+            </div>
+            <div class="estadistica">
+                <h2>Tareas completadas</h2>
+                <p>{{completadas}}</p>
+            </div>
+            <div class="estadistica">
+                <h2>Tareas pendientes</h2>
+                <p>{{pendientes}}</p>
+            </div>
+            <div class="estadistica">
+                <h2>Tareas en progreso</h2>
+                <p>{{progreso}}</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

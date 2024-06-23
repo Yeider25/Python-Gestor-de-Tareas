@@ -1,5 +1,10 @@
 from flask import Flask,render_template,request,redirect,url_for,flash,session
 import mysql.connector
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import io
+import base64
 
 app = Flask(__name__)
 
@@ -14,6 +19,66 @@ def get_db_connection():
         database = "db-gestor"
     )
     return db
+
+def get_estadisticas_admin():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT COUNT(*) AS total_usuarios FROM usuarios")
+    total_usuarios = cursor.fetchone()['total_usuarios']
+
+    cursor.execute("SELECT COUNT(*) AS total_tareas FROM tareas")
+    total_tareas = cursor.fetchone()['total_tareas']
+
+    cursor.execute("SELECT COUNT(*) AS tareas_completadas FROM tareas WHERE Estado='Terminado'")
+    tareas_completadas = cursor.fetchone()['tareas_completadas']
+
+    cursor.execute("SELECT COUNT(*) AS tareas_pendientes FROM tareas WHERE Estado!='Terminado'")
+    tareas_pendientes = cursor.fetchone()['tareas_pendientes']
+
+    conn.close()
+
+    return total_usuarios, total_tareas, tareas_completadas, tareas_pendientes
+
+def create_chart(data, title):
+    plt.figure(figsize=(6, 4))
+    plt.barh(['Total'], [data])
+    plt.xlabel('Cantidad')
+    plt.title(title)
+
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    plt.close()
+    img.seek(0)
+    return base64.b64encode(img.getvalue()).decode()
+
+@app.route('/Estadisticas-administrador', methods=['GET'])
+def Estadisticas_administrador():
+    total_usuarios, total_tareas, tareas_completadas, tareas_pendientes = get_estadisticas_admin()
+
+    total_usuarios_chart = create_chart(total_usuarios, 'Total de usuarios')
+    total_tareas_chart = create_chart(total_tareas, 'Total de tareas asignadas')
+    tareas_completadas_chart = create_chart(tareas_completadas, 'Tareas completadas')
+    tareas_pendientes_chart = create_chart(tareas_pendientes, 'Tareas pendientes')
+
+    return render_template('Estadisticas_administrador.html',
+                           total_usuarios_chart=total_usuarios_chart, 
+                           total_tareas_chart=total_tareas_chart, 
+                           tareas_completadas_chart=tareas_completadas_chart, 
+                           tareas_pendientes_chart=tareas_pendientes_chart)
+
+@app.route('/Estadisticas-usuario', methods=['GET'])
+def Estadisticas_usuario():
+    return render_template('Estadisticas_usuario.html')
+
+# No almacenar el cache de la pagina
+@app.after_request
+def add_header(response):    
+    response.headers['Cache-Control'] = 'no-cache,no-store,must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = 0    
+    return response   
+
 
 # Crear las rutas
 @app.route('/')

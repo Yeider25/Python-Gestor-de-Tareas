@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='CSS/Estilo.css')}}">
+    <title>Estadisticas</title>
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="/Usuario">Inicio</a>
+        <a href="/Registro_tareas">Registrar tareas</a>
+        <a href="/Estadisticas-usuario">Estadisticas</a>
+        <a href="/Salir">Cerrar sesión</a>
+        <a href="/Cambiar_contrasena_usuario">
+            <img src="{{url_for('static', filename='Imagenes/icons8-change-password-58.png')}}" alt="Cambiar Contraseña">
+        </a>
+    </header>
+
+    <div class="content-estadisticas">
+        <h1>Estadisticas</h1>
+        <div class="contentEstadisticas">
+            <div class="estadisticasContainer">
+                <p>Tareas completadas</p>
+                <div class="imageContainer">
+
+                </div>
+            </div>
+            <div class="estadisticasContainer">
+                <p>Tareas pendientes</p>
+                <div class="imageContainer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
