@@ -16,7 +16,7 @@ def get_db_connection():
         host = "localhost",
         user = "root",
         password = "",
-        database = "db-gestor"
+        database = "gestor_de _tareas"
     )
     return db
 
@@ -679,15 +679,28 @@ def cambiar_contrasena_usuario():
 
     return render_template('Cambiar_contraseña_usuario.html')
     
-@app.route('buscar_tarea')
+""" @app.route('buscar_tarea')
 def buscar_tarea():
     nombre_tarea = request.args.get('nombre_tarea')
     db = get_db_connection()
     cursor = db.cursor()
     cursor.execute("SELECT * FROM tareas WHERE Nombre = %s", (nombre_tarea,))
     tarea = cursor.fetchone()
+    return render_template('Interfaz_administrador.html', tarea=tarea) """
+
+@app.route('/buscar_tarea', methods=['GET', 'POST'])
+def buscar_tarea():
+    if request.method == 'POST':
+        nombre_tarea = request.form.get('nombre_tarea')
+    else:
+        nombre_tarea = request.args.get('nombre_tarea')
+    db = get_db_connection()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM tareas WHERE Nombre = %s", (nombre_tarea,))
+    tarea = cursor.fetchone()
     return render_template('Interfaz_administrador.html', tarea=tarea)
 
+@app.route('/Salir')
 def Salir():   
     session.pop("nombre_usuario", None)
     print("Sesión cerrada y nombre de usuario eliminado.")
